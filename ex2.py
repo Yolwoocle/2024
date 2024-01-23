@@ -1,4 +1,4 @@
-import debug_2
+# from debug_2 import *
 from typing import List
 
 """
@@ -32,14 +32,23 @@ def ordre(k: int, n: int, tailles: List[int]) -> None:
     :param n: le nombre de personnes
     :param tailles: la liste des tailles de chaque personne
     """
+    
     # Tri par sélection 
     for i in range(n):
         # On trouve le minimum
-        j_min = i
+        min_val = tailles[i]
         for j in range(i, n):
-            if tailles[j] < tailles[j_min]:
-                j_min = j
+            if tailles[j] < min_val:
+                min_val = tailles[j]
                 
+        # On vérifie si ce minimum existe sur i + (multiple de k)
+        j_min = i
+        while j_min < n and tailles[j_min] != min_val:
+            j_min += k
+        
+        if j_min >= n:
+            return False
+        
         # On vérifie si on peut l'amener à l'indice i
         if (j_min - i) % k != 0:
             return False
@@ -47,8 +56,10 @@ def ordre(k: int, n: int, tailles: List[int]) -> None:
         # On effectue l'échange
         for j in range(j_min, i, -k):
             echange(tailles, j, j-k)
+        # print("^", tailles) 
     return True
 
+# set_i_ex(1)
 if __name__ == "__main__":
     k = int(input())
     n = int(input())
